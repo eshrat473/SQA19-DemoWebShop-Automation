@@ -1,0 +1,134 @@
+{
+  "info": {
+    "_postman_id": "8dcb86b0-e376-4f9d-a42c-7920706d737f",
+    "name": "Demo Web Shop API Automation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58750064",
+    "_collection_link": "https://go.postman.co/collection/58750064-8dcb86b0-e376-4f9d-a42c-7920706d737f?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET - All Users",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst users = pm.response.json();\r\n\r\npm.test(\"Response is an array\", function () {\r\n    pm.expect(users).to.be.an(\"array\");\r\n});\r\n\r\npm.test(\"User array is not empty\", function () {\r\n    pm.expect(users.length).to.be.greaterThan(0);\r\n});\r\n\r\npm.test(\"Users contain id, name and email\", function () {\r\n    users.forEach(user => {\r\n        pm.expect(user).to.have.property(\"id\");\r\n        pm.expect(user).to.have.property(\"name\");\r\n        pm.expect(user).to.have.property(\"email\");\r\n    });\r\n});\r\n\r\n// Save the first user for Request 2\r\nconst selectedUser = users[0];\r\n\r\npm.collectionVariables.set(\r\n    \"userId\",\r\n    String(selectedUser.id)\r\n);\r\n\r\npm.collectionVariables.set(\r\n    \"selectedUser\",\r\n    JSON.stringify(selectedUser)\r\n);\r\n\r\nconsole.log(\"Saved user ID:\", selectedUser.id);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users?userId=1&selectedUser=Saved JSON user data",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ],
+          "query": [
+            {
+              "key": "userId",
+              "value": "1"
+            },
+            {
+              "key": "selectedUser",
+              "value": "Saved JSON user data"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT - Update User",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Retrieve the original user saved by GET\r\nconst originalUser = JSON.parse(\r\n    pm.collectionVariables.get(\"selectedUser\")\r\n);\r\n\r\n// Generate dynamic values for every execution\r\nconst runId = Date.now();\r\n\r\nconst updatedName = `SQA Student ${runId}`;\r\nconst updatedEmail = `sqa_${runId}@example.com`;\r\nconst updatedCompanyName = `QA Company ${runId}`;\r\n\r\n// Update only the required fields\r\nconst updatedUser = {\r\n    ...originalUser,\r\n    name: updatedName,\r\n    email: updatedEmail,\r\n    company: {\r\n        ...originalUser.company,\r\n        name: updatedCompanyName\r\n    }\r\n};\r\n\r\n// Prepare the request body\r\npm.variables.set(\r\n    \"putUserBody\",\r\n    JSON.stringify(updatedUser)\r\n);\r\n\r\n// Save expected values for response validation\r\npm.collectionVariables.set(\"updatedName\", updatedName);\r\npm.collectionVariables.set(\"updatedEmail\", updatedEmail);\r\npm.collectionVariables.set(\"updatedCompanyName\", updatedCompanyName);\r\n\r\nconsole.log(\"Updating user ID:\", pm.collectionVariables.get(\"userId\"));\r\nconsole.log(\"Updated name:\", updatedName);\r\nconsole.log(\"Updated email:\", updatedEmail);\r\nconsole.log(\"Updated company:\", updatedCompanyName);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const response = pm.response.json();\r\nconst userId = pm.collectionVariables.get(\"userId\");\r\nconst updatedName = pm.collectionVariables.get(\"updatedName\");\r\n\r\npm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\npm.test(\"Returned ID matches saved user ID\", function () {\r\n    pm.expect(String(response.id)).to.eql(String(userId));\r\n});\r\n\r\npm.test(\"Phone number is not empty\", function () {\r\n    pm.expect(response.phone).to.be.a(\"string\").and.not.empty;\r\n});\r\n\r\npm.test(\"Name matches updated name\", function () {\r\n    pm.expect(response.name).to.eql(updatedName);\r\n});\r\n\r\npm.test(\"Email matches updated email\", function () {\r\n    pm.expect(response.email).to.eql(\r\n        pm.collectionVariables.get(\"updatedEmail\")\r\n    );\r\n});\r\n\r\npm.test(\"Company name matches updated company name\", function () {\r\n    pm.expect(response.company.name).to.eql(\r\n        pm.collectionVariables.get(\"updatedCompanyName\")\r\n    );\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{{putUserBody}}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users/{{userId}}?=&=",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users",
+            "{{userId}}"
+          ],
+          "query": [
+            {
+              "key": "",
+              "value": ""
+            },
+            {
+              "key": "",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "selectedUser",
+      "value": ""
+    },
+    {
+      "key": "updatedName",
+      "value": ""
+    },
+    {
+      "key": "updatedEmail",
+      "value": ""
+    },
+    {
+      "key": "updatedCompanyName",
+      "value": ""
+    }
+  ]
+}
