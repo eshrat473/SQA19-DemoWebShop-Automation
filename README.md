@@ -27,20 +27,20 @@ SQA19_DemoWebShop/
 │
 ├── api-tests/
 │   ├── Demo Web Shop API Automation.postman_collection.json
-│   ├── package.json
-│   └── reports/
-│       └── api-report.html
+│   └── package.json
 │
 ├── ui-tests/
 │   ├── pages/
 │   ├── tests/
 │   ├── playwright.config.js
 │   ├── package.json
-│   └── .env
+│   └── .env (local configuration, not committed)
 │
 ├── .gitignore
 └── README.md
 ```
+
+Generated reports are stored locally and excluded from Git tracking.
 
 ## UI Automation – Playwright
 
@@ -87,13 +87,19 @@ Use your own Demo Web Shop account credentials.
 
 From the `ui-tests` directory:
 
+**Q1 – Invalid Login**
+
 ```bash
 npm run test:q1
 ```
 
+**Q2 – Register and Add Product to Cart**
+
 ```bash
 npm run test:q2
 ```
+
+**Q3 – Product Search and Complete Checkout**
 
 ```bash
 npm run test:q3
@@ -101,7 +107,9 @@ npm run test:q3
 
 **Note:** Q3 completes a checkout and creates a demo order.
 
-### Run All Main Scenarios Sequentially
+### Run All UI Scenarios Sequentially
+
+From the `ui-tests` directory:
 
 ```bash
 npm run test:q1 && npm run test:q2 && npm run test:q3
@@ -148,6 +156,7 @@ The collection tests the JSONPlaceholder Users API.
 ### API Test Scenarios
 
 **GET – All Users**
+
 - Verify HTTP status code 200.
 - Verify response is an array.
 - Verify the response array is not empty.
@@ -155,6 +164,7 @@ The collection tests the JSONPlaceholder Users API.
 - Save a selected user's ID and data in collection variables.
 
 **PUT – Update User**
+
 - Use the saved user ID dynamically.
 - Generate dynamic name, email and company name.
 - Update user information using a PUT request.
@@ -178,6 +188,16 @@ The Newman HTML report is generated at:
 ```text
 api-tests/reports/api-report.html
 ```
+
+## Combined UI and API Test Execution
+
+Run all UI test scenarios followed by API tests from the project root:
+
+```bash
+(cd ui-tests && npm run test:q1 && npm run test:q2 && npm run test:q3) && (cd api-tests && npm test)
+```
+
+**Note:** Q3 completes checkout and creates a demo order. Run this combined command only when you intend to execute the complete test suite.
 
 ## GitHub Workflow
 
