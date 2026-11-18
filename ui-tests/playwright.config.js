@@ -22,7 +22,7 @@ export default defineConfig({
 
   use: {
     headless: true,
-    screenshot: 'only-on-failure',
+    screenshot: 'on',
     trace: 'on-first-retry'
   }
 });

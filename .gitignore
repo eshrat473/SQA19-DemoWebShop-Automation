@@ -4,3 +4,7 @@ node_modules/
 .DS_Store
 test-results/
 playwright/.cache/
+ui-tests/.env
+**/playwright-report/
+**/allure-results/
+**/allure-report/
