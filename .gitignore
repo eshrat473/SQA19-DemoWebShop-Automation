@@ -7,4 +7,7 @@ playwright/.cache/
 ui-tests/.env
 **/playwright-report/
 **/allure-results/
+**/allure-report/api-tests/reports/
+
 **/allure-report/
+api-tests/reports/

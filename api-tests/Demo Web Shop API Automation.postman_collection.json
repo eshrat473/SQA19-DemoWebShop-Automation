@@ -23,28 +23,7 @@
       "request": {
         "method": "GET",
         "header": [],
-        "url": {
-          "raw": "https://jsonplaceholder.typicode.com/users?userId=1&selectedUser=Saved JSON user data",
-          "protocol": "https",
-          "host": [
-            "jsonplaceholder",
-            "typicode",
-            "com"
-          ],
-          "path": [
-            "users"
-          ],
-          "query": [
-            {
-              "key": "userId",
-              "value": "1"
-            },
-            {
-              "key": "selectedUser",
-              "value": "Saved JSON user data"
-            }
-          ]
-        }
+        "url": "https://jsonplaceholder.typicode.com/users"
       },
       "response": []
     },
@@ -82,29 +61,7 @@
             }
           }
         },
-        "url": {
-          "raw": "https://jsonplaceholder.typicode.com/users/{{userId}}?=&=",
-          "protocol": "https",
-          "host": [
-            "jsonplaceholder",
-            "typicode",
-            "com"
-          ],
-          "path": [
-            "users",
-            "{{userId}}"
-          ],
-          "query": [
-            {
-              "key": "",
-              "value": ""
-            },
-            {
-              "key": "",
-              "value": ""
-            }
-          ]
-        }
+        "url": "https://jsonplaceholder.typicode.com/users/{{userId}}"
       },
       "response": []
     }
